@@ -1,0 +1,90 @@
+extends main
+
+block css
+
+block body
+    .row.bg-title
+        .col-lg-3.col-md-4.col-sm-4.col-xs-12
+            h4.page-title Profile page
+    .row
+        .col-md-4.col-xs-12
+            .white-box
+                .user-bg
+                    img(width='100%', alt='user', src=user.avatarLink)
+                    .overlay-box
+                        .user-content
+                            a(href='javascript:void(0)')
+                            img.thumb-lg.img-circle(src=user.avatarLink, alt='img')
+                            h4.text-white #{user.name}
+                            h5.text-white #{user.email}
+                .user-btm-box
+                    .col-md-12.col-sm-12.text-center
+                        h5 #{user.slogan}
+            #postBox.white-box
+                h3.box-title POSTS
+                .table-responsive
+                    table#postsTable.table
+                        thead
+                            th Title
+                            th Description
+                        tbody
+                             each post in posts
+                                tr(data-expanded='true')
+                                    td 
+                                        a(href='/posts/'+ post.postId) #{post.title}
+                                    td= post.shortContent
+        .col-md-8.col-xs-12
+            .white-box
+                form.form-horizontal.form-material(method='POST',action='/users',enctype="multipart/form-data")
+                    .form-group
+                        label.col-md-12 Full Name
+                        .col-md-12
+                            input.form-control.form-control-line(required,type='text',name = 'name',value = user.name,placeholder='Your Name')
+                    .form-group
+                        label.col-md-12(for='example-email') Email
+                        .col-md-12
+                            input#example-email.form-control.form-control-line(required,type='email',name = 'email',value=user.email placeholder='xxx@admin.com')
+                    .form-group
+                        label.col-md-12 Address
+                        .col-md-12
+                            input.form-control.form-control-line(type='text',name='address',value= user.address)
+                    .form-group
+                        label.col-md-12 Phone No
+                        .col-md-12
+                            input.form-control.form-control-line(type='text',name='phoneNumber',placeholder='123 456 7890',value=user.phoneNumber)
+                    //- .form-group
+                    //-     label.col-md-12 Slogan
+                    //-     .col-md-12
+                    //-         textarea.form-control.form-control-line(name='slogan',rows='5',value=user.slogan) #{user.slogan}
+                    .form-group
+                        label.col-md-12 Avatar
+                        .col-md-12
+                            button#avatarFileBtn.btn.btn-success(type="button") Borrow
+                            input#avatarFile(type="file",name="avatarImages",style="display:none",accept="image/*")
+                            label(style="margin-left:5px")#avartarDisplay
+                    //hidden field
+                    .form-group
+                        .col-sm-12
+                            input#actionType.form-control.form-control-line(type='text',name='type',value=type,style='display:none')
+                            input#actionType.form-control.form-control-line(type='text',name='bkAvatarLink',value=user.bkAvatarLink,style='display:none')
+                            input.form-control.form-control-line(type='text',name='id',value=user.id,style='display:none')
+                    .form-group
+                        .col-sm-4
+                            button#btnAction.btn.btn-success(type="submit") Update Profile
+                        .col-sm-4
+                            a.btn.btn-success(href='/users') Cancel
+block scripts
+    script.
+        $( document ).ready(function() {
+            if($('#actionType').val() == 'add'){
+                document.getElementById('btnAction').innerText = 'Add User';
+                $("#postBox").hide();
+            }
+            $("#avatarFileBtn").click(()=>{
+                $("#avatarFile").click();
+            });
+            $("#avatarFile").on("change",()=>{
+                var fileName = document.getElementById('avatarFile').files[0].name;
+                document.getElementById('avartarDisplay').innerHTML = fileName; 
+            });
+        });

@@ -1,0 +1,45 @@
+extends main
+
+block css
+
+block body
+
+    .row.bg-title
+        .col-lg-3.col-md-4.col-sm-4.col-xs-12
+            h4.page-title HOME
+    .row
+        .col-sm-12
+            .white-box
+                h3.box-title RECENTS
+                .table-responsive
+                    table#postsTable.table
+                        thead
+                            th Title
+                            th Category
+                            th Author
+                            th Description
+                            th Date
+                            th
+                            th
+                        tbody
+                             each post in posts
+                                tr(data-expanded='true')
+                                    td 
+                                        a(href='/posts/'+ post.postId) #{post.title}
+                                    td= post.category
+                                    td
+                                        a(href='/users/'+ post.ownerId) #{post.author}
+                                    td= post.shortContent
+                                    td= post.date
+                                    td 
+                                        a(href='/posts/'+post.postId)
+                                            i.fa.fa-pencil
+                                    td
+                                        a(href='/posts/deletePost'+post.postId)
+                                            i.fa.fa-trash
+block scripts
+    script.
+         $('#postsTable').DataTable({
+            "bLengthChange": false
+        });
+        
